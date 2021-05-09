@@ -6,13 +6,13 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    
-    public bool isGameOver=false;
-    public bool nextBlank=false;
+
+    public bool isGameOver = false;
+    public bool nextBlank = false;
     public int RunLevel = 1;
-    public float maxHp=500;
+    public float maxHp = 500;
     public float currentHp;
-    public int score=0;
+    public int score = 0;
     public int coin = 0;
     public int mailcount = 0;
     public bool inBonus = false;
@@ -20,7 +20,10 @@ public class GameManager : MonoBehaviour
     public Slider hpbar;
     public TextMeshPro coinText;
     public TextMeshPro scoreText;
-    private static GameManager instance=null;
+    private static GameManager instance = null;
+
+    public List<(int jelly, int obstacle, int floor)> map = new List<(int jelly, int obstacle, int floor)>();
+    public int currentPos = 0;
 
 
     private void Awake()
@@ -29,15 +32,17 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this.gameObject);
+            currentHp = maxHp;
         }
         else
             Destroy(this);
     }
     private void Start()
     {
-        currentHp = maxHp;
+        //맵 리딩
+        map = CSVReader.ReadList("Excel/map");
         StartCoroutine("hpdown");
-        Debug.Log(currentHp);
+        //Debug.Log(currentHp);
         Invoke("make", 2f);
         Invoke("make", 2.5f);
         Invoke("make", 3f);
@@ -56,7 +61,7 @@ public class GameManager : MonoBehaviour
     public GameObject target2;
     void make()
     {
-        Instantiate(target, new Vector3(3,0,0), transform.rotation, null);
+        Instantiate(target, new Vector3(3, 0, 0), transform.rotation, null);
     }
     void make2()
     {
@@ -79,16 +84,16 @@ public class GameManager : MonoBehaviour
         currentHp += var;
         if (currentHp > maxHp)
             currentHp = maxHp;
-        if(currentHp<=0)
+        if (currentHp <= 0)
         {
             isGameOver = true;
             currentHp = 0;
         }
-        hpbar.value =1- currentHp / maxHp;
+        hpbar.value = 1 - currentHp / maxHp;
     }
     public void coinChange(int var)
     {
         coin += var;
-        coinText.text = string.Format("{0:n0}",coin);
+        coinText.text = string.Format("{0:n0}", coin);
     }
 }

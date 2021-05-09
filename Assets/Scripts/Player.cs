@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, BonusEntrypos, 3f * Time.deltaTime);
             yield return new WaitForEndOfFrame();
-        } 
+        }
         while (Vector3.Distance(transform.position, Bonuspos) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, Bonuspos, 3f * Time.deltaTime);
@@ -73,11 +73,11 @@ public class Player : MonoBehaviour
         {
             if (isMobile)
             {
-                // touch ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                // touch ????? ????
             }
             else
             {
-                // Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½
+                // ????? ?????
                 if (!GameManager.Instance.inBonus)
                 {
                     if (Input.GetKeyDown(KeyCode.Space) && (_state == State.run || _state == State.jump))
@@ -113,13 +113,13 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    // ï¿½ï¿½ï¿½Ê½ï¿½ -> ï¿½Æ¹ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                    // ????? -> ?????? ?????? ???
                     if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.LeftControl))
                     {
 
                     }
-                    
-                }                
+
+                }
             }
 
         }
@@ -151,8 +151,8 @@ public class Player : MonoBehaviour
     IEnumerator giant()
     {
         if (!GameManager.Instance.isGameOver)
-        { 
-            // ì—¬ê¸°ë¥¼ ìŠ¤ì¼€ì¼ì´ í•œë²ˆì— ë°”ë€ŒëŠ”ê²Œ ì•„ë‹ˆë¼ ì½”ë£¨í‹´ìœ¼ë¡œ ì ì§„ì ìœ¼ë¡œ ë°”ë€Œê²Œ
+        {
+            // ¿©±â¸¦ ½ºÄÉÀÏÀÌ ÇÑ¹ø¿¡ ¹Ù²î´Â°Ô ¾Æ´Ï¶ó ÄÚ·çÆ¾À¸·Î Á¡ÁøÀûÀ¸·Î ¹Ù²î°Ô
             gameObject.transform.localScale = new Vector3(3, 3, 1);
             yield return new WaitForSeconds(3f);
             Debug.Log("stopgiant");
