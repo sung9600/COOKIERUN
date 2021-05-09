@@ -8,6 +8,7 @@ TagManager:
   - endzone
   - jelly
   - player
+  - pet
   layers:
   - Default
   - TransparentFX

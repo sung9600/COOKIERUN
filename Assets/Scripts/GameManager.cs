@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
 
     public bool isGameOver = false;
-    public bool nextBlank = false;
     public int RunLevel = 1;
     public float maxHp = 500;
     public float currentHp;
@@ -35,7 +34,7 @@ public class GameManager : MonoBehaviour
             currentHp = maxHp;
         }
         else
-            Destroy(this);
+            Destroy(this.gameObject);
     }
     private void Start()
     {

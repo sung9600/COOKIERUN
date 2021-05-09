@@ -15,13 +15,18 @@ public class Item : MonoBehaviour
     {
         while (!GameManager.Instance.isGameOver)
         {
-            transform.position -= Time.deltaTime * speed;
+            if (Pet.Instance.magneton&&Vector3.Distance(transform.position,Pet.Instance.gameObject.transform.position)<3f)
+            {
+                transform.position = Vector3.Lerp(transform.position, Pet.Instance.gameObject.transform.position, Time.deltaTime);
+            }
+            else
+                transform.position -= Time.deltaTime * speed;
             yield return new WaitForEndOfFrame();
         }
     }
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("player"))
+        if (collision.CompareTag("player")||(Pet.Instance.magneton&& collision.CompareTag("pet")))
         {
             DoJob();
             Destroy(this.gameObject);

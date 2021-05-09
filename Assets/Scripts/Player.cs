@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
         else
-            Destroy(this);
+            Destroy(this.gameObject);
     }
     public void Bonus()
     {

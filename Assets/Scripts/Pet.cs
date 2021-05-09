@@ -6,12 +6,26 @@ public class Pet : MonoBehaviour
 {
     public enum State { Idle, BonusEntry, Abil, Magnet };
     public State _state = State.Idle;
+    public static Pet Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                return null;
+            }
+            return instance;
+        }
+    }
+    private static Pet instance = null;
+    #region consts
     Vector3 frontpos = new Vector3(2, 0, 0);
     Vector3 initpos = new Vector3(-7, -1, 0);
     Vector3 frontscale = new Vector3(2, 2, 1);
     Vector3 initscale = new Vector3(.5f, .5f, 1);
     Vector3 BonusEntrypos = new Vector3(-6, 3, 0);
     Vector3 Bonuspos = new Vector3(-6, 0, 0);
+    #endregion
 
     Animator animator;
     public bool magneton;
@@ -19,12 +33,19 @@ public class Pet : MonoBehaviour
     public Transform jellyparent;
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+            Destroy(this.gameObject);
         animator = GetComponent<Animator>();
     }
     private void Start()
     {
         StartCoroutine("Abil");
-        Invoke("Magnet", 3f);
+        //Invoke("Magnet", 3f);
         //Magnet();
         //Bonus();
     }
