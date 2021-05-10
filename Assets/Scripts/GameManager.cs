@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour
     public bool inBonus = false;
     public bool isBig = false;
     public Slider hpbar;
-    public TextMeshPro coinText;
-    public TextMeshPro scoreText;
+    public Canvas canvas;
+    public TextMeshProUGUI coinText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI mailText;
     private static GameManager instance = null;
 
     public List<(int jelly, int obstacle, int floor)> map = new List<(int jelly, int obstacle, int floor)>();
@@ -35,6 +37,10 @@ public class GameManager : MonoBehaviour
         }
         else
             Destroy(this.gameObject);
+        canvas = GameObject.Find("UI").transform.GetChild(0).GetComponent<Canvas>();
+        coinText = canvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
+        scoreText = canvas.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
+        mailText = canvas.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -42,18 +48,18 @@ public class GameManager : MonoBehaviour
         map = CSVReader.ReadList("Excel/map");
         StartCoroutine("hpdown");
         //Debug.Log(currentHp);
-        Invoke("make", 2f);
-        Invoke("make", 2.5f);
-        Invoke("make", 3f);
-        Invoke("make", 3.5f);
-        Invoke("make2", 4f);
+        //Invoke("make", 2f);
+        //Invoke("make", 2.5f);
+        //Invoke("make", 3f);
+        //Invoke("make", 3.5f);
+        //Invoke("make2", 4f);
     }
     IEnumerator hpdown()
     {
-        while (!this.isGameOver)
+        while (!isGameOver)
         {
             hpChange(-1);
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSecondsRealtime(0.25f);
         }
     }
     public GameObject target;
@@ -90,9 +96,12 @@ public class GameManager : MonoBehaviour
         }
         hpbar.value = 1 - currentHp / maxHp;
     }
-    public void coinChange(int var)
+    public void coinChange()
     {
-        coin += var;
         coinText.text = string.Format("{0:n0}", coin);
+    }
+    public void scoreChange()
+    {
+        scoreText.text = string.Format("{0:n0}", scoreText);
     }
 }

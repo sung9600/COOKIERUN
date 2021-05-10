@@ -18,17 +18,17 @@ public class Groundpart : MonoBehaviour
             {
                 //Debug.Log($"{gameObject.name} move, x: {transform.position.x}");
                 transform.position = new Vector3(11.2f, -4, 0);
-                if (GameManager.Instance.currentPos > GameManager.Instance.map.Count)
-                    if (GameManager.Instance.map[GameManager.Instance.currentPos].floor == 1)
-                    {
-                        GetComponent<BoxCollider2D>().isTrigger = false;
-                        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-                    }
-                    else
-                    {
-                        GetComponent<BoxCollider2D>().isTrigger = true;
-                        GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0f);
-                    }
+                //if (GameManager.Instance.currentPos > GameManager.Instance.map.Count)
+                //    if (GameManager.Instance.map[GameManager.Instance.currentPos].floor == 1)
+                //    {
+                //        GetComponent<BoxCollider2D>().isTrigger = false;
+                //        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                //    }
+                //    else
+                //    {
+                //        GetComponent<BoxCollider2D>().isTrigger = true;
+                //        GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0f);
+                //    }
                 GameManager.Instance.currentPos++;
 
             }

@@ -9,5 +9,6 @@ public class Coin : Item
     {
         //Debug.Log("Coin override");
         GameManager.Instance.coin += isgold ? 500 : 100;
+        GameManager.Instance.coinChange();
     }
 }

@@ -9,6 +9,7 @@ public class Jelly : Item
     protected override void DoJob()
     {
         GameManager.Instance.score += score;
+        GameManager.Instance.scoreChange();
     }
 
 }

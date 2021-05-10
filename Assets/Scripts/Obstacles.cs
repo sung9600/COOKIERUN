@@ -16,7 +16,7 @@ public class Obstacles : MonoBehaviour
     {
         while (!GameManager.Instance.isGameOver)
         {
-            if (transform.position.y > 1.6f)
+            if (transform.position.y > 1.7f)
             {
                 transform.position += 7f*Time.deltaTime * speed;
             }

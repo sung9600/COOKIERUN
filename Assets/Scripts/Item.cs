@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    Vector3 speed = new Vector3(4f, 0, 0);
+    protected Vector3 speed = Vector3.left*4;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -20,7 +20,7 @@ public class Item : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, Pet.Instance.gameObject.transform.position, Time.deltaTime);
             }
             else
-                transform.position -= Time.deltaTime * speed;
+                transform.position += Time.deltaTime * speed;
             yield return new WaitForEndOfFrame();
         }
     }

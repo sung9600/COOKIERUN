@@ -65,7 +65,7 @@ public class CSVReader
             output2.Add((int.Parse(output[i][0]), int.Parse(output[i][1]), int.Parse(output[i][2])));
 
         }
-        Debug.Log(output2.Count);
+        //Debug.Log(output2.Count);
         return output2;
     }
 }

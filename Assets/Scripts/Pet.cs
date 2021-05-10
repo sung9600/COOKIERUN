@@ -44,7 +44,7 @@ public class Pet : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine("Abil");
+        //StartCoroutine("Abil");
         //Invoke("Magnet", 3f);
         //Magnet();
         //Bonus();
@@ -90,16 +90,16 @@ public class Pet : MonoBehaviour
             if (Vector3.Distance(transform.position,frontpos)>0.1f)
                 StartCoroutine(_Magnet_Abil_PetMove($"{_state}", "Abil"));
             Coroutine a = StartCoroutine(AbilJellyGen());
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSecondsRealtime(6f);
             StopCoroutine(a);
-            yield return new WaitForSeconds(12f);
+            yield return new WaitForSecondsRealtime(12f);
         }
         yield break;
     }
 
     IEnumerator AbilJellyGen()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
         while (true)
         {
             // ¿©±â ¾îºô Á©¸® Á¨
@@ -109,7 +109,7 @@ public class Pet : MonoBehaviour
                 a.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-7f, -3f), Random.Range(6f, 10f)), ForceMode2D.Impulse);
                 Destroy(a, 2f);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(1f);
         }
         //yield break;
     }
@@ -125,7 +125,7 @@ public class Pet : MonoBehaviour
     {
         yield return null;
         magneton = true;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSecondsRealtime(5f);
         magneton = false;
         yield break;
     }
