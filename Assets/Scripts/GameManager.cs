@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI mailText;
     private static GameManager instance = null;
 
-    public List<(int jelly, int obstacle, int floor)> map = new List<(int jelly, int obstacle, int floor)>();
+    public List<(int jelly_h, int jelly, int obstacle, int floor)> map = new List<(int, int, int, int)>();
     public int currentPos = 0;
 
 
@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
         {
             isGameOver = true;
             currentHp = 0;
+            gameOver();
         }
         hpbar.value = 1 - currentHp / maxHp;
     }
@@ -103,5 +104,49 @@ public class GameManager : MonoBehaviour
     public void scoreChange()
     {
         scoreText.text = string.Format("{0:n0}", scoreText);
+    }
+    public void gameOver()
+    {
+        Player.Instance.anim.Play("Dead"); 
+
+        GameObject panel = GameObject.Find("UI").transform.Find("Canvas").Find("Panel").gameObject;
+        panel.SetActive(true);
+        StartCoroutine(showresult_c(panel.transform.Find("Inner").Find("Score"), GameManager.Instance.score));
+        StartCoroutine(showresult_c(panel.transform.Find("Inner").Find("Coin"), GameManager.Instance.coin));
+        Invoke("scalechange", 1f);
+    }
+    void scalechange()
+    {
+        Time.timeScale = 0f;
+    }
+
+
+    IEnumerator showresult_c(Transform t, float f)
+    {
+        float duration = 0.5f;
+        float offset = f / duration;
+        float current = 0;
+        while (current < f)
+        {
+            current += offset * Time.deltaTime;
+            t.GetComponent<TextMeshProUGUI>().SetText(string.Format("{0:n0}", current));
+            yield return null;
+        }
+        //current = f;
+        t.GetComponent<TextMeshProUGUI>().SetText(string.Format("{0:n0}", f));
+        
+        yield break;
+    }
+
+    public void fast()
+    {
+        StartCoroutine("fastfunc");
+    }
+    IEnumerator fastfunc()
+    {
+        Time.timeScale = 5f;
+        yield return new WaitForSecondsRealtime(3f);
+        Time.timeScale = 1f;
+        yield break;
     }
 }

@@ -52,17 +52,17 @@ public class CSVReader
         return output2;
     }
 
-    public static List<(int a, int b, int c)> ReadList(string filename)
+    public static List<(int a, int b, int c, int d)> ReadList(string filename)
     {
         string text = (Resources.Load(filename) as TextAsset).text;
         string[] texts = text.Split('\n');
         string[][] output = new string[texts.Length][];
-        List<(int a, int b, int c)> output2 = new List<(int, int, int)>();
-        // output[][0]: 젤리 , [1]: obstacle, [2]: 발판
+        List<(int a, int b, int c, int d)> output2 = new List<(int, int, int, int)>();
+        // output[][0]: 젤리높이, [1]: 젤리 종류 , [2]: obstacle 종류, [3]: 발판 높이
         for (int i = 2; i < output.Length - 1; i++)
         {
             output[i] = texts[i].Split(',');
-            output2.Add((int.Parse(output[i][0]), int.Parse(output[i][1]), int.Parse(output[i][2])));
+            output2.Add((int.Parse(output[i][0]), int.Parse(output[i][1]), int.Parse(output[i][2]), int.Parse(output[i][3])));
 
         }
         //Debug.Log(output2.Count);

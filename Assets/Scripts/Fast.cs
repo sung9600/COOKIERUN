@@ -6,6 +6,6 @@ public class Fast : Item
 {
     protected override void DoJob()
     {
-
+        GameManager.Instance.fast();
     }
 }
