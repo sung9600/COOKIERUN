@@ -5,18 +5,21 @@ using UnityEngine;
 public class Obstacles : MonoBehaviour
 {
     public Vector3 speed = new Vector3(0, -1, 0);
+    public Vector3 initPos;
+    public bool isup=false;
     // Start is called before the first frame update
     private void Start()
     {
-        transform.position = new Vector3(transform.position.x, 5, 0);
-
+        //if(isup)
+        //    transform.position = new Vector3(transform.position.x, 5, 0);
+        transform.position = initPos;
         StartCoroutine("Move");
     }
     IEnumerator Move()
     {
         while (!GameManager.Instance.isGameOver)
         {
-            if (transform.position.y > 1.7f)
+            if ( isup && transform.position.y > 1.7f )
             {
                 transform.position += 7f*Time.deltaTime * speed;
             }
@@ -31,7 +34,6 @@ public class Obstacles : MonoBehaviour
             if (!GameManager.Instance.isBig)
             {
                 Destroy(this.gameObject);
-                // hp까이는거
                 GameManager.Instance.hpChange(-40);
             }
             else

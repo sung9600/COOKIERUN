@@ -5,9 +5,12 @@ using UnityEngine;
 public class Groundpart : MonoBehaviour
 {
     Vector3 speed = new Vector3(4f, 0f, 0f);
+    public static Transform parent;
+    
     // Start is called before the first frame update
     void Start()
     {
+        parent = GameObject.Find("items").transform;
         StartCoroutine("MovePart");
     }
     IEnumerator MovePart()
@@ -18,11 +21,11 @@ public class Groundpart : MonoBehaviour
             {
                 //Debug.Log($"{gameObject.name} move, x: {transform.position.x}");
                 transform.position = new Vector3(11.2f, -4, 0);
-                //floor();
-                //JellyGen();
-                //ObstacleGen();
+                floor();
+                JellyGen();
+                ObstacleGen();
                 //Debug.Log(Time.time);
-                //GameManager.Instance.currentPos++;
+                GameManager.Instance.currentPos++;
             }
             transform.position -= Time.deltaTime * speed;
             yield return new WaitForFixedUpdate();
@@ -34,10 +37,11 @@ public class Groundpart : MonoBehaviour
     {
         if (GameManager.Instance.currentPos <= GameManager.Instance.map.Count)
         {
-            if (GameManager.Instance.map[GameManager.Instance.currentPos].floor == 1)
+            if (GameManager.Instance.map[GameManager.Instance.currentPos].floor != 0)
             {
                 GetComponent<BoxCollider2D>().isTrigger = false;
                 GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                transform.position = new Vector3(transform.position.x, GameManager.Instance.map[GameManager.Instance.currentPos].floor - 5, 0);
             }
             else
             {
@@ -53,9 +57,8 @@ public class Groundpart : MonoBehaviour
             if (GameManager.Instance.map[GameManager.Instance.currentPos].jelly != 0)
             {
                 int h = GameManager.Instance.map[GameManager.Instance.currentPos].jelly_h; // 높이
-                int j = GameManager.Instance.map[GameManager.Instance.currentPos].jelly; // 종류
-
-                //Instantiate();
+                int j = GameManager.Instance.map[GameManager.Instance.currentPos].jelly-1; // 종류
+                Instantiate(GameManager.Instance.items[j], new Vector3(transform.position.x, -2.5f + 0.6f * h, 0), Quaternion.identity, parent);
             }
             else
                 return;
@@ -66,7 +69,8 @@ public class Groundpart : MonoBehaviour
     {
         if (GameManager.Instance.map[GameManager.Instance.currentPos].obstacle != 0)
         {
-
+            int j = GameManager.Instance.map[GameManager.Instance.currentPos].obstacle-1; // 종류
+            Instantiate(GameManager.Instance.obstacles[j],parent);
         }
         else
             return;

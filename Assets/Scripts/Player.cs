@@ -65,11 +65,11 @@ public class Player : MonoBehaviour
         mailUI.SetActive(cheeze);
 
     }
-    private void Start()
-    {
-        if (cheeze)
-            StartCoroutine("genMails");
-    }
+    //private void Start()
+    //{
+    //    if (cheeze)
+    //        StartCoroutine("genMails");
+    //}
     #region cheeze_ability
 
     IEnumerator genMails()
@@ -205,6 +205,7 @@ public class Player : MonoBehaviour
         {
             _state = State.dead;
             GameManager.Instance.isGameOver = true;
+            GameManager.Instance.gameOver();
         }
         else if (collision.collider.CompareTag("ground"))
         {

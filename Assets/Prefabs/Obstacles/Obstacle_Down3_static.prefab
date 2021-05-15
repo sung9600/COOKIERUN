@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7617754602588127438}
   - component: {fileID: 6899935645045756276}
   - component: {fileID: 4357825467568879325}
+  - component: {fileID: 5253250482090400466}
   m_Layer: 0
   m_Name: Obstacle_Down3_static
   m_TagString: Untagged
@@ -131,3 +132,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5253250482090400466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427242153708260790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaa512bb3fd45f48b31e6527535b6c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: {x: 0, y: -1, z: 0}
+  initPos: {x: 3, y: -1.86, z: 0}
+  isup: 0

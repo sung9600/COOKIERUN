@@ -21,7 +21,11 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI mailText;
+    public TextMeshProUGUI startUI;
     private static GameManager instance = null;
+    public GameObject[] items=new GameObject[10];
+    public GameObject[] obstacles = new GameObject[7];
+
 
     public List<(int jelly_h, int jelly, int obstacle, int floor)> map = new List<(int, int, int, int)>();
     public int currentPos = 0;
@@ -41,18 +45,36 @@ public class GameManager : MonoBehaviour
         coinText = canvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
         scoreText = canvas.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
         mailText = canvas.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>();
+        startUI = GameObject.Find("Bubble").transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
+        Time.timeScale = 0f;
     }
     private void Start()
     {
         //맵 리딩
         map = CSVReader.ReadList("Excel/map");
-        StartCoroutine("hpdown");
+        StartCoroutine("startuichange");
         //Debug.Log(currentHp);
         //Invoke("make", 2f);
         //Invoke("make", 2.5f);
         //Invoke("make", 3f);
         //Invoke("make", 3.5f);
         //Invoke("make2", 4f);
+    }
+    IEnumerator startuichange()
+    {
+        GameObject.Find("Bubble").transform.GetChild(0).gameObject.SetActive(true);
+        startUI.SetText(" 3");
+        yield return new WaitForSecondsRealtime(1f);
+        startUI.SetText(" 2");
+        yield return new WaitForSecondsRealtime(1f);
+        startUI.SetText(" 1");
+        yield return new WaitForSecondsRealtime(1f);
+        GameObject.Find("Bubble").transform.GetChild(0).gameObject.SetActive(false);
+        Time.timeScale = 1f;
+        StartCoroutine("hpdown");
+        if (Player.Instance.cheeze)
+            Player.Instance.StartCoroutine("genMails");
+        yield break;
     }
     IEnumerator hpdown()
     {
@@ -61,16 +83,6 @@ public class GameManager : MonoBehaviour
             hpChange(-1);
             yield return new WaitForSecondsRealtime(0.25f);
         }
-    }
-    public GameObject target;
-    public GameObject target2;
-    void make()
-    {
-        Instantiate(target, new Vector3(3, 0, 0), transform.rotation, null);
-    }
-    void make2()
-    {
-        Instantiate(target2, new Vector3(6, 0, 0), transform.rotation, null);
     }
     public static GameManager Instance
     {
@@ -84,6 +96,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region statchanges
     public void hpChange(int var)
     {
         currentHp += var;
@@ -103,7 +116,7 @@ public class GameManager : MonoBehaviour
     }
     public void scoreChange()
     {
-        scoreText.text = string.Format("{0:n0}", scoreText);
+        scoreText.text = string.Format("{0:n0}", score);
     }
     public void gameOver()
     {
@@ -119,7 +132,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
     }
-
+    #endregion
 
     IEnumerator showresult_c(Transform t, float f)
     {
