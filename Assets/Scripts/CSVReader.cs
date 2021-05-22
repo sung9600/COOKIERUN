@@ -2,70 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
 public class CSVReader
 {
-    public static string[][] Read(string filename)
-    {
-        Debug.Log(filename);
-
-        string text = (Resources.Load(filename) as TextAsset).text;
-        string[] texts = text.Split('\n');
-        string[][] output = new string[texts.Length][];
-        // output[][0]: 젤리 , [1]: obstacle, [2]: 발판
-        for (int i = 2; i < output.Length; i++)
-        {
-            output[i] = texts[i].Split(',');
-
-            /*string s = "";
-            for (int j = 0; j < output[i].Length - 1; j++)
-            {
-                s += output[i][j];
-                Debug.Log(s);
-            }*/
-
-        }
-        return output;
-    }
-    public static int[][] ReadInt(string filename)
-    {
-        string text = (Resources.Load(filename) as TextAsset).text;
-        string[] texts = text.Split('\n');
-        string[][] output = new string[texts.Length][];
-        int[][] output2 = new int[texts.Length][];
-        // output[][0]: 젤리 , [1]: obstacle, [2]: 발판
-        for (int i = 2; i < output.Length - 1; i++)
-        {
-            output[i] = texts[i].Split(',');
-
-            //string s = "";
-            for (int j = 0; j < output[i].Length; j++)
-            {
-                output2[i][j] = int.Parse(output[i][j]);
-                /*
-                s += output[i][j];
-                Debug.Log(s);
-                */
-            }
-
-        }
-        return output2;
-    }
-
     public static List<(int a, int b, int c, int d)> ReadList(string filename)
     {
-        string text = (Resources.Load(filename) as TextAsset).text;
-        string[] texts = text.Split('\n');
-        string[][] output = new string[texts.Length][];
+        StreamReader sr = new StreamReader($"{Application.dataPath}/Resources/Excel/map.csv"); 
         List<(int a, int b, int c, int d)> output2 = new List<(int, int, int, int)>();
-        // output[][0]: 젤리높이, [1]: 젤리 종류 , [2]: obstacle 종류, [3]: 발판 높이
-        for (int i = 2; i < output.Length - 1; i++)
+
+        sr.ReadLine();
+        sr.ReadLine();
+        bool _isEOF = false;
+        while (!_isEOF)
         {
-            output[i] = texts[i].Split(',');
-            output2.Add((int.Parse(output[i][0]), int.Parse(output[i][1]), int.Parse(output[i][2]), int.Parse(output[i][3])));
+            string data = sr.ReadLine();
+            Debug.Log(data);
+            if (data == null)
+            {
+                _isEOF = true;
+                break;
+            }
+            var data_values = data.Split(',');
+            output2.Add((int.Parse(data_values[0]), int.Parse(data_values[1]), int.Parse(data_values[2]), int.Parse(data_values[3])));
 
         }
-        //Debug.Log(output2.Count);
+
         return output2;
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - jelly
   - player
   - pet
+  - complete
   layers:
   - Default
   - TransparentFX

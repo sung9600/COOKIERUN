@@ -36,7 +36,6 @@ public class Pet : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
         }
         else
             Destroy(this.gameObject);
@@ -44,10 +43,7 @@ public class Pet : MonoBehaviour
     }
     private void Start()
     {
-        //StartCoroutine("Abil");
-        //Invoke("Magnet", 3f);
-        //Magnet();
-        //Bonus();
+        StartCoroutine("Abil");
     }
     #region bonus
     public void Bonus()
@@ -66,13 +62,13 @@ public class Pet : MonoBehaviour
         while (Vector3.Distance(transform.position, BonusEntrypos) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, BonusEntrypos, 3f * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         //Debug.Log($"end : {Time.time}");
         while (Vector3.Distance(transform.position, Bonuspos) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, Bonuspos, 3f * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         animator.SetBool("entryDone", true);
         animator.SetBool("entryDone", false);
@@ -84,7 +80,7 @@ public class Pet : MonoBehaviour
 
     IEnumerator Abil()
     {
-        yield return null;
+        yield return new WaitForSecondsRealtime(3f);
         while (!GameManager.Instance.isGameOver)
         {
             if (Vector3.Distance(transform.position,frontpos)>0.1f)
@@ -125,8 +121,10 @@ public class Pet : MonoBehaviour
     {
         yield return null;
         magneton = true;
+        Debug.Log("petmagnet");
         yield return new WaitForSecondsRealtime(5f);
         magneton = false;
+        Debug.Log("petmagnet end");
         yield break;
     }
     IEnumerator _Magnet_Abil_PetMove(string before, string after)
@@ -134,12 +132,13 @@ public class Pet : MonoBehaviour
         yield return null;
         _state = (State)System.Enum.Parse(typeof(State), after);
         animator.SetBool(after, true);
+        Debug.Log("petmove");
 
         while (transform.position.x < 1.7f)
         {
             transform.position = Vector3.MoveTowards(transform.position, frontpos, 5f * Time.deltaTime);
             transform.localScale = Vector3.Lerp(transform.localScale, frontscale, 1f * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         yield return new WaitForSeconds(3f);
         if (_state == (State)System.Enum.Parse(typeof(State), after))
@@ -148,7 +147,7 @@ public class Pet : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, initpos, 5f * Time.deltaTime);
                 transform.localScale = Vector3.Lerp(transform.localScale, initscale, 1f * Time.deltaTime);
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForFixedUpdate();
             }
             transform.position = initpos;
             transform.localScale = initscale;

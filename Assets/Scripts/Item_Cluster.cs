@@ -17,7 +17,7 @@ public class Item_Cluster : MonoBehaviour
         {
             transform.position += Vector3.up * Time.deltaTime*(y+4.75f);
             //Vector3.Lerp(transform.position, target, Time.deltaTime);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         yield break;
     }

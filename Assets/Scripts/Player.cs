@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public GameObject mail;
     public GameObject mailUI;
     public Transform mailparent;
+    public GameObject[] effects;
     Vector3 BonusEntrypos = new Vector3(-6, 2.8f, 0);
     Vector3 Bonuspos = new Vector3(-6, -0.2f, 0);
     public enum State { run, jump, slide, dead, bonus };
@@ -38,10 +39,7 @@ public class Player : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
         }
-        else
-            Destroy(this.gameObject);
         mailparent = GameObject.Find("items").transform.Find("mails");
         isMobile = Application.isMobilePlatform;
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -117,12 +115,12 @@ public class Player : MonoBehaviour
         while (Vector3.Distance(transform.position, BonusEntrypos) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, BonusEntrypos, 3f * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         while (Vector3.Distance(transform.position, Bonuspos) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, Bonuspos, 3f * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
     #endregion bonus
@@ -205,7 +203,7 @@ public class Player : MonoBehaviour
         {
             _state = State.dead;
             GameManager.Instance.isGameOver = true;
-            GameManager.Instance.gameOver();
+            GameManager.Instance.gameOver(true);
         }
         else if (collision.collider.CompareTag("ground"))
         {
@@ -216,7 +214,13 @@ public class Player : MonoBehaviour
                 anim.Play($"Run{GameManager.Instance.RunLevel}");
             }
         }
+        else if(collision.collider.CompareTag("complete"))
+        {
+            GameManager.Instance.gameOver(false);
+        }
     }
+
+
     #region giant
     public void Giant()
     {
@@ -231,7 +235,7 @@ public class Player : MonoBehaviour
             // 여기를 스케일이 한번에 바뀌는게 아니라 코루틴으로 점진적으로 바뀌게
             gameObject.transform.localScale = new Vector3(3, 3, 1);
             yield return new WaitForSecondsRealtime(3f);
-            Debug.Log("stopgiant");
+            Debug.Log($"stopgiant {Time.time}");
             gameObject.transform.localScale = new Vector3(1, 1, 1);
             gameObject.transform.position -= new Vector3(0, 4, 0);
             GameManager.Instance.isBig = false;
@@ -239,6 +243,22 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+    
 
+    public void playermove()
+    {
+        Debug.Log("playermove");
+        StartCoroutine("playerMove");
+    }
+    IEnumerator playerMove()
+    {
+        Vector3 a = new Vector3(12f, -1, 0);
+        Debug.Log("playermovec");
+        while (transform.position.x < 11f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, a, 5f * Time.deltaTime);
+            yield return new WaitForFixedUpdate();
+        }
+    }
 
 }

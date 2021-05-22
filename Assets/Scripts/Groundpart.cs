@@ -21,16 +21,24 @@ public class Groundpart : MonoBehaviour
             {
                 //Debug.Log($"{gameObject.name} move, x: {transform.position.x}");
                 transform.position = new Vector3(11.2f, -4, 0);
-                floor();
-                JellyGen();
-                ObstacleGen();
-                //Debug.Log(Time.time);
                 GameManager.Instance.currentPos++;
+                if (GameManager.Instance.currentPos < 100)
+                {
+                    floor();
+                    JellyGen();
+                    ObstacleGen();
+                    //Debug.Log(Time.time);
+                }
+                else if(GameManager.Instance.currentPos == 100)
+                {
+                    Player.Instance.playermove();
+                }
             }
             transform.position -= Time.deltaTime * speed;
             yield return new WaitForFixedUpdate();
         }
     }
+
     #region gens
     // map.jelly_h: 젤리높이, map.jelly: 젤리 종류 , map.obstacle: obstacle 종류, map.floor: 발판 높이
     void floor()

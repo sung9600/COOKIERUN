@@ -19,26 +19,28 @@ public class Obstacles : MonoBehaviour
     {
         while (!GameManager.Instance.isGameOver)
         {
-            if ( isup && transform.position.y > 1.7f )
+            if ( isup && transform.position.y > 2f )
             {
                 transform.position += 7f*Time.deltaTime * speed;
             }
             transform.position += 4f * Time.deltaTime * Vector3.left;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("player"))
         {
-            if (!GameManager.Instance.isBig)
+            if (!GameManager.Instance.isBig && !GameManager.Instance.isFast)
             {
+                //Debug.Log(gameObject.name);
+                Player.Instance.anim.Play("Hit");
                 Destroy(this.gameObject);
                 GameManager.Instance.hpChange(-40);
             }
             else
             {
-                //거대화중 부숴지는 애니메이션
+                //거대화중 or fast중 부서지는 애니메이션
                 StopCoroutine("Move");
                 StartCoroutine("spin");
                 Destroy(this.gameObject, 2f);
@@ -57,7 +59,7 @@ public class Obstacles : MonoBehaviour
         while (true)
         {
             transform.RotateAround(transform.position, Vector3.back, Time.deltaTime * 150f);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 }

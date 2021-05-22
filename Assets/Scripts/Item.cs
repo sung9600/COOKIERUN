@@ -21,7 +21,7 @@ public class Item : MonoBehaviour
             }
             else
                 transform.position += Time.deltaTime * speed;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
     protected void OnTriggerEnter2D(Collider2D collision)

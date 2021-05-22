@@ -11,7 +11,7 @@ public class Cheeze_Mail : Item
     protected override void DoJob()
     {
         GameManager.Instance.mailcount++;
-        if (GameManager.Instance.mailcount == 16)
+        if (GameManager.Instance.mailcount == 5)
         {
             Player.Instance.cheezeabil();
             GameManager.Instance.mailcount = 0;
@@ -32,7 +32,7 @@ public class Cheeze_Mail : Item
         while (!GameManager.Instance.isGameOver)
         {
             transform.position = new Vector3(transform.position.x,Mathf.Round((y+Mathf.Sin(Time.time *floating_spd)) * 100f) *0.01f,transform.position.z);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 }

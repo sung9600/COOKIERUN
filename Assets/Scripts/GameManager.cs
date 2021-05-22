@@ -16,15 +16,16 @@ public class GameManager : MonoBehaviour
     public int mailcount = 0;
     public bool inBonus = false;
     public bool isBig = false;
+    public bool isFast = false;
     public Slider hpbar;
     public Canvas canvas;
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI mailText;
-    public TextMeshProUGUI startUI;
     private static GameManager instance = null;
     public GameObject[] items=new GameObject[10];
     public GameObject[] obstacles = new GameObject[7];
+    public GameObject[] cookies = new GameObject[2];
 
 
     public List<(int jelly_h, int jelly, int obstacle, int floor)> map = new List<(int, int, int, int)>();
@@ -41,35 +42,38 @@ public class GameManager : MonoBehaviour
         }
         else
             Destroy(this.gameObject);
+        if (Transfer.Instance.cheeze)
+        {
+            Instantiate(cookies[0]);
+        }
+        else
+        {
+            Instantiate(cookies[1]);
+        }
+        Destroy(Transfer.Instance.gameObject);
         canvas = GameObject.Find("UI").transform.GetChild(0).GetComponent<Canvas>();
-        coinText = canvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
-        scoreText = canvas.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
+         coinText = canvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
+         scoreText = canvas.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
         mailText = canvas.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>();
-        startUI = GameObject.Find("Bubble").transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
+        map = CSVReader.ReadList("Excel/map.csv");
         Time.timeScale = 0f;
     }
     private void Start()
     {
         //맵 리딩
-        map = CSVReader.ReadList("Excel/map");
         StartCoroutine("startuichange");
-        //Debug.Log(currentHp);
-        //Invoke("make", 2f);
-        //Invoke("make", 2.5f);
-        //Invoke("make", 3f);
-        //Invoke("make", 3.5f);
-        //Invoke("make2", 4f);
     }
     IEnumerator startuichange()
     {
-        GameObject.Find("Bubble").transform.GetChild(0).gameObject.SetActive(true);
-        startUI.SetText(" 3");
+        canvas.transform.GetChild(10).gameObject.SetActive(true);
+        TextMeshProUGUI a =canvas.transform.Find("Image").GetChild(0).GetComponent<TextMeshProUGUI>();
+        a.SetText("3");
         yield return new WaitForSecondsRealtime(1f);
-        startUI.SetText(" 2");
+        a.SetText("2");
         yield return new WaitForSecondsRealtime(1f);
-        startUI.SetText(" 1");
+        a.SetText("1");
         yield return new WaitForSecondsRealtime(1f);
-        GameObject.Find("Bubble").transform.GetChild(0).gameObject.SetActive(false);
+        canvas.transform.Find("Image").gameObject.SetActive(false);
         Time.timeScale = 1f;
         StartCoroutine("hpdown");
         if (Player.Instance.cheeze)
@@ -106,7 +110,7 @@ public class GameManager : MonoBehaviour
         {
             isGameOver = true;
             currentHp = 0;
-            gameOver();
+            gameOver(true);
         }
         hpbar.value = 1 - currentHp / maxHp;
     }
@@ -118,9 +122,10 @@ public class GameManager : MonoBehaviour
     {
         scoreText.text = string.Format("{0:n0}", score);
     }
-    public void gameOver()
+    public void gameOver(bool dead)
     {
-        Player.Instance.anim.Play("Dead"); 
+        if(dead)
+            Player.Instance.anim.Play("Dead"); 
 
         GameObject panel = GameObject.Find("UI").transform.Find("Canvas").Find("Panel").gameObject;
         panel.SetActive(true);
@@ -157,9 +162,11 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator fastfunc()
     {
-        Time.timeScale = 5f;
-        yield return new WaitForSecondsRealtime(3f);
+        Time.timeScale = 4f;
+        isFast = true;
+        yield return new WaitForSecondsRealtime(2f);
         Time.timeScale = 1f;
+        isFast = false;
         yield break;
     }
 }
